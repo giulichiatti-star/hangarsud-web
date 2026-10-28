@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>Panel | Hangarsud</title>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<div class="demo">Propuesta de diseño · Versión de demostración · datos ficticios</div>
+<div class="gate" id="gate"><form id="gf"><img src="logo.jpg" alt=""><h2 style="font-size:28px;margin:0">Panel Hangarsud</h2><input id="gp" type="password" placeholder="Código de acceso" autocomplete="off" required><button class="btn btn-p" style="width:100%;justify-content:center">Entrar</button><small id="ge">Acceso demo: el código está en <code>app.js</code>. En producción se reemplaza por login real.</small></form></div>
+
+<div class="app">
+<aside>
+  <a href="index.html" class="logo"><img src="logo.jpg" alt=""><span>hangar<b>sud</b></span></a>
+  <a class="on" data-s="dash">▦ Resumen</a>
+  <a data-s="leads">◉ Consultas</a>
+  <a data-s="res">★ Reservas y vouchers</a>
+  <a data-s="cal">▤ Calendario</a>
+  <a data-s="auto">↯ Automatizaciones</a>
+  <a data-s="tpl">✉ Mensajes</a>
+  <div class="me">Hola, equipo Hangarsud<br><a href="index.html">Ver web →</a></div>
+</aside>
+<main>
+<div class="note">Datos de demostración (en tu navegador). Los importes aparecen al cargar los precios en <code>app.js</code>.</div>
+
+<section class="sec on" id="dash" style="padding:0">
+  <div class="top"><div><h1>Buen día ✈</h1><small>Así va Hangarsud este mes</small></div><div class="seg"><span>7 d</span><span class="on">30 d</span><span>90 d</span></div></div>
+  <div id="alerts" style="margin-top:20px"></div>
+  <div class="kpis" id="kpis"></div>
+  <div class="row">
+    <div class="panel"><h3>Embudo de ventas</h3><div id="funnel"></div></div>
+    <div class="panel"><h3>Ocupación de la flota</h3><p class="sub2">Horas usadas sobre disponibles este mes</p><div id="flota"></div></div>
+  </div>
+  <div class="panel"><h3>Rendimiento por canal</h3><p class="sub2">Qué canal trae más alumnos</p><table id="canales"></table></div>
+  <div class="panel"><h3>Últimas consultas</h3><table id="recent"></table></div>
+</section>
+
+<section class="sec" id="leads" style="padding:0"><h1>Consultas</h1><small style="color:var(--mut)">Cambiá el estado y respondé por WhatsApp con un clic</small><div class="panel" style="margin-top:18px"><table id="all"></table></div></section>
+
+<section class="sec" id="res" style="padding:0"><h1>Reservas y vouchers</h1><div class="kpis" id="rk"></div><div class="panel"><table id="rt"></table></div></section>
+
+<section class="sec" id="cal" style="padding:0"><h1>Calendario</h1><div class="panel" style="margin-top:18px"><div class="cal" id="calg"></div></div>
+  <div class="panel"><h3>Agenda visible en la web</h3><div id="slotl"></div></div></section>
+
+<section class="sec" id="auto" style="padding:0"><h1>Automatizaciones</h1><div style="margin-top:18px" id="flows"></div></section>
+
+<section class="sec" id="tpl" style="padding:0"><h1>Mensajes automáticos</h1><div style="margin-top:18px" id="tpls"></div></section>
+</main></div>
+
+<script src="app.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+// acceso demo
+const unlock=()=>{$('gate').style.display='none';render()};
+try{if(sessionStorage.getItem('hs_ok')==='1')unlock()}catch{}
+$('gf').onsubmit=e=>{e.preventDefault();if($('gp').value===CFG.pass){try{sessionStorage.setItem('hs_ok','1')}catch{}unlock()}else{$('ge').textContent='Código incorrecto.';$('ge').style.color='#c0391b'}};
+document.querySelectorAll('aside a[data-s]').forEach(a=>a.onclick=()=>{
+ document.querySelectorAll('aside a').forEach(x=>x.classList.remove('on'));a.classList.add('on');
+ document.querySelectorAll('.sec').forEach(s=>s.classList.toggle('on',s.id===a.dataset.s));});
+
+const ESTADOS=['nuevo','contactado','agendado','inscripto'];
+const hace=iso=>{const h=(Date.now()-new Date(iso))/36e5;return h<1?'hace minutos':h<24?`hace ${Math.floor(h)} h`:`hace ${Math.floor(h/24)} d`};
+
+function render(){
+ const L=getLeads(),S=getSlots(),tot=L.length,cnt=k=>L.filter(l=>l.estado===k).length,ins=cnt('inscripto');
+ const ticket=ticketMedio(),$$=ticket!=null;
+ const vouchers=L.filter(l=>l.tipo==='voucher'),reservas=L.filter(l=>l.tipo==='reserva');
+ const ingresos=!$$?null:L.filter(l=>l.estado==='inscripto'&&l.tipo==='consulta').length*ticket+vouchers.reduce((a,l)=>a+(l.monto||0),0)+reservas.reduce((a,l)=>a+(l.monto||0),0);
+ const pipeline=$$?(cnt('contactado')+cnt('agendado'))*CFG.tasaCierre*ticket:null;
+ const gasto=Object.values(CFG.gasto).reduce((a,b)=>a+b,0);
+ const cac=ins&&gasto?gasto/ins:0;
+
+ // alertas
+ const viejas=L.filter(l=>l.estado==='nuevo'&&(Date.now()-new Date(l.fecha))>36e5);
+ const calientes=L.filter(l=>l.estado==='nuevo'&&l.inicio==='Lo antes posible');
+ const casi=S.filter(s=>s.cupos-s.anotados>0&&s.cupos-s.anotados<=2);
+ let al='';
+ if(viejas.length)al+=`<div class="alert"><span>⚠</span><div><b>${viejas.length} consultas sin responder hace más de 1 hora</b>${viejas.slice(0,3).map(l=>l.nombre).join(', ')}${viejas.length>3?'…':''}. Cada hora que pasa baja la chance de cierre.</div></div>`;
+ if(calientes.length)al+=`<div class="alert warn"><span>🔥</span><div><b>${calientes.length} contactos quieren empezar lo antes posible</b>Respondelos primero.</div></div>`;
+ if(casi.length)al+=`<div class="alert ok"><span>✈</span><div><b>${casi.length} fechas casi llenas</b>${casi.map(s=>s.titulo).join(' · ')}. Buen momento para empujar la promoción.</div></div>`;
+ $('alerts').innerHTML=al;
+
+ $('kpis').innerHTML=($$?[['Ingresos del mes',money(ingresos),'▲ 14% vs mes anterior','up','hot'],['Proyectado (pipeline)',money(pipeline),`${CFG.tasaCierre*100}% de cierre estimado`,'up',''],['Costo por alumno',ins&&gasto?money(cac):'—',gasto?`Inversión: ${money(gasto)}`:'Cargar inversión en app.js','up',''],['Conversión',Math.round(ins/tot*100)+'%',`${tot} consultas`,'up','']]
+ :[['Consultas',tot,'▲ 18% vs mes anterior','up',''],['Vuelos agendados',cnt('agendado')+reservas.length,'Reservas desde la web','up',''],['Inscriptos',ins,'▲ 2 esta semana','up','hot'],['Conversión',Math.round(ins/tot*100)+'%','de consulta a inscripto','up','']])
+ .map(k=>`<div class="kpi ${k[4]}"><small>${k[0]}</small><b style="font-size:${k[1].length>9?34:46}px">${k[1]}</b><span class="${k[3]}">${k[2]}</span></div>`).join('');
+
+ const stages=[['Consultas',tot],['Contactados',cnt('contactado')+cnt('agendado')+ins],['Vuelo agendado',cnt('agendado')+ins],['Inscriptos',ins]];
+ $('funnel').innerHTML=stages.map(s=>`<div class="bar"><span style="width:110px">${s[0]}</span><i style="width:${Math.max(6,s[1]/tot*100)}%"></i><b>${s[1]}</b></div>`).join('');
+ $('flota').innerHTML=CFG.flota.map(f=>{const p=Math.round(f.usadas/f.disp*100);return `<div class="occ"><div><span><b>${f.n}</b> · ${f.m}</span><span>${f.usadas}/${f.disp} hs · ${p}%</span></div><i style="--w:${p}%"></i></div>`}).join('');
+
+ const canales={};L.forEach(l=>{const c=canales[l.origen]=canales[l.origen]||{n:0,i:0};c.n++;if(l.estado==='inscripto')c.i++});
+ $('canales').innerHTML='<tr><th>Canal</th><th>Consultas</th><th>Inscriptos</th><th>Conversión</th>'+(gasto?'<th>Inversión</th><th>Costo por alumno</th>':'')+'</tr>'+
+  Object.entries(canales).sort((a,b)=>b[1].n-a[1].n).map(([k,c])=>{const g=CFG.gasto[k]||0;return `<tr><td><b>${k}</b></td><td>${c.n}</td><td>${c.i}</td><td>${Math.round(c.i/c.n*100)}%</td>${gasto?`<td>${g?money(g):'Orgánico'}</td><td>${g&&c.i?money(g/c.i):g?'Sin ventas':'—'}</td>`:''}</tr>`}).join('');
+
+ const st=(l,i)=>`<select data-i="${i}">${ESTADOS.map(e=>`<option ${e===l.estado?'selected':''}>${e}</option>`).join('')}</select>`;
+ const row=(l,i,full)=>`<tr><td>${l.nombre}<br><small style="color:var(--mut)">${l.tel}</small></td><td>${l.interes}${l.plan?`<br><small style="color:var(--mut)">${l.plan}</small>`:''}</td><td>${l.origen}</td><td><span class="sc ${l.score||score(l)}">${l.score||score(l)}</span></td><td>${full?st(l,i):`<span class="st ${l.estado}">${l.estado}</span>`}</td><td><small>${hace(l.fecha)}</small></td>${full?`<td><a class="act" target="_blank" href="${waLink(l.tel,'Hola '+l.nombre.split(' ')[0]+'! Te escribo de Hangarsud por tu consulta.')}">WhatsApp</a></td>`:''}</tr>`;
+ const head=f=>`<tr><th>Nombre</th><th>Interés</th><th>Origen</th><th>Prioridad</th><th>Estado</th><th>Cuándo</th>${f?'<th></th>':''}</tr>`;
+ $('recent').innerHTML=head(0)+L.slice(0,5).map((l,i)=>row(l,i,0)).join('');
+ $('all').innerHTML=head(1)+L.map((l,i)=>row(l,i,1)).join('');
+ document.querySelectorAll('td select').forEach(s=>s.onchange=()=>{updateLead(+s.dataset.i,{estado:s.value});render()});
+
+ // reservas y vouchers
+ const sm=a=>$$?money(a.reduce((x,l)=>x+(l.monto||0),0)):'';
+ $('rk').innerHTML=[['Reservas de vuelo',reservas.length,sm(reservas)],['Vouchers vendidos',vouchers.length,sm(vouchers)],['Total',reservas.length+vouchers.length,sm(reservas.concat(vouchers))]]
+  .map((k,i)=>`<div class="kpi ${i==2?'hot':''}"><small>${k[0]}</small><b>${k[1]}</b><span class="up">${k[2]}</span></div>`).join('');
+ $('rt').innerHTML='<tr><th>Cliente</th><th>Tipo</th><th>Detalle</th><th>Fecha vuelo</th><th>Monto</th><th>Pago</th></tr>'+reservas.concat(vouchers).map(l=>`<tr><td>${l.nombre}<br><small style="color:var(--mut)">${l.tel}</small></td><td>${l.tipo==='voucher'?'Voucher':'Reserva'}</td><td>${l.interes}</td><td>${l.slot?fmt(l.slot):'—'}</td><td>${money(l.monto)}</td><td><span class="st ${l.estado==='inscripto'?'inscripto':'contactado'}">${l.estado==='inscripto'?'Pagado':'Pendiente'}</span></td></tr>`).join('');
+
+ // calendario
+ let h=['L','M','X','J','V','S','D'].map(d=>`<div class="h">${d}</div>`).join('');
+ const t=new Date();t.setDate(t.getDate()-((t.getDay()+6)%7));
+ for(let i=0;i<28;i++){const d=new Date(t);d.setDate(t.getDate()+i);
+  const ev=S.filter(s=>new Date(s.fecha).toDateString()===d.toDateString());
+  h+=`<div>${d.getDate()}${ev.map(e=>`<em class="${e.titulo.includes('Vuelo')?'b':''}">${e.titulo.slice(0,18)}</em>`).join('')}</div>`}
+ $('calg').innerHTML=h;
+ $('slotl').innerHTML=S.map(s=>`<div class="slot"><div><b>${s.titulo}</b><br><small style="color:var(--mut)">${fmt(s.fecha)}</small></div><span>${s.anotados}/${s.cupos}</span></div>`).join('');
+}
+
+const flows=[
+ ['Nueva consulta → respuesta inmediata',['Formulario web / IG / WhatsApp','WhatsApp de bienvenida + plan elegido','Email con info del curso','Aviso al instructor'],1],
+ ['Alerta al dueño: consulta sin responder',['Consulta sin respuesta 1 h','Aviso por WhatsApp al responsable','2 h: reasigna a otro instructor'],1],
+ ['Reserva de vuelo con seña',['Elige fecha en la web','Link de pago (Mercado Pago)','Pago OK: confirmación + recordatorios','Cupo descontado de la agenda'],1],
+ ['Voucher de regalo',['Compra de voucher','Pago confirmado','Voucher por WhatsApp y mail','Recordatorio a los 30 días si no lo canjearon'],1],
+ ['Seguimiento si no responde',['Sin respuesta 48 hs','WhatsApp recordatorio','72 hs: email con oferta','7 días: pasa a "frío"'],1],
+ ['Recordatorio de vuelo',['Vuelo agendado','24 hs antes: WhatsApp + email','2 hs antes: aviso con clima y ubicación'],1],
+ ['Post-vuelo',['Vuelo realizado','Gracias + fotos','2 días: propuesta de plan de curso','Pedido de reseña en Google'],0]];
+$('flows').innerHTML=flows.map(f=>`<div class="panel"><div class="flow"><b>${f[0]}</b><div class="sw ${f[2]?'':'off'}"></div></div><div class="flow">${f[1].map((n,i)=>`<span class="node ${i==0?'t':''}">${n}</span>${i<f[1].length-1?'→':''}`).join('')}</div></div>`).join('');
+const tp=[['Bienvenida (WhatsApp)','¡Hola {nombre}! 👋 Soy de Hangarsud. Gracias por tu interés en {curso}. Armamos tu plan: {link}'],
+ ['Recordatorio 24 hs','Hola {nombre}, mañana {fecha} es tu vuelo en Hangarsud ✈️. Llegá 30 min antes con DNI. ¡Te esperamos!'],
+ ['Voucher de regalo','¡Gracias por tu compra, {nombre}! Acá está tu voucher para regalar: {voucher}. Se canjea reservando en {link}.'],
+ ['Post-vuelo','¡Qué vuelo, {nombre}! 🛩️ Si querés seguir, armamos tu plan de piloto privado. ¿Hablamos?']];
+$('tpls').innerHTML=tp.map(x=>`<div class="panel"><b>${x[0]}</b><div class="tpl">${x[1]}</div></div>`).join('');
+</script>
+</body>
+</html>

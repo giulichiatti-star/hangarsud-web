@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Hangarsud | Escuela de Vuelo en Córdoba · Curso de Piloto Privado</title>
+<meta name="description" content="Escuela de vuelo en Córdoba, Argentina. Vuelo de introducción, curso de piloto privado y habilitaciones. Armá tu plan y reservá en 2 minutos.">
+<meta property="og:title" content="Hangarsud · Escuela de Vuelo en Córdoba">
+<meta property="og:description" content="Tu primer vuelo en Córdoba. Armá tu plan y reservá en 2 minutos.">
+<meta property="og:type" content="website"><meta property="og:image" content="video/avioneta-poster.jpg">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"EducationalOrganization","name":"Hangar Sud Escuela de Vuelo","description":"Escuela de vuelo: piloto privado, habilitaciones y vuelos de introducción.","address":{"@type":"PostalAddress","addressLocality":"Córdoba","addressCountry":"AR"},"sameAs":["https://www.instagram.com/hangarsud/"]}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="landing.css">
+</head>
+<body>
+<div class="demo">Propuesta de diseño · Versión de demostración, no es el sitio oficial de Hangarsud</div>
+
+<header class="bar" id="bar">
+  <nav><a href="#cursos">Cursos</a><a href="#plan">Tu plan</a><a href="#regalo">Regalar</a><a href="#equipo">Equipo</a></nav>
+  <a href="#" class="brand"><img src="logo.jpg" alt="">Hangar Sud</a>
+  <div class="r"><a href="https://www.instagram.com/hangarsud/" target="_blank" rel="noopener" class="ig">Instagram</a><a href="#contacto" class="b">Reservar</a></div>
+</header>
+
+<section class="hero">
+  <video id="hv" autoplay muted loop playsinline preload="auto" poster="video/avioneta-poster.jpg" aria-hidden="true"><source src="video/avioneta.mp4" type="video/mp4"></video>
+  <div class="hc">
+    <div>
+      <small>Escuela de vuelo · Córdoba</small>
+      <h1>Tu primer vuelo<br>en Córdoba</h1>
+      <p>Instrucción personalizada, sin experiencia previa y sin compromiso. Reservalo en 2 minutos.</p>
+      <a href="#contacto" class="ln">Reservar vuelo</a><a href="#plan" class="ln">Armá tu plan</a>
+    </div>
+    <div class="nextf">Próximo vuelo<b id="nx">—</b><span id="nxc"></span></div>
+  </div>
+  <button class="pp" id="pp" aria-label="Pausar video">❚❚</button>
+</section>
+
+<section class="sec"><div class="in">
+  <div class="lbl rv">Hangarsud</div>
+  <p class="statement rv">Instructores habilitados. Aviones al día. <span>Un plan claro hasta tu licencia de piloto.</span></p>
+</div></section>
+
+<section class="sec" id="cursos" style="padding-top:0"><div class="in" style="max-width:none;padding:0">
+  <div class="cs">
+    <a href="#plan" class="cp rv" data-curso="privado"><img src="fotos/pilotos.jpg" alt="Pilotos en cabina" loading="lazy"><div><small>01 · Más elegido</small><h3>Piloto Privado</h3><span class="ln" style="margin:0">Armá tu plan</span></div></a>
+    <a href="#contacto" class="cp rv" data-int="Vuelo de introducción"><img src="fotos/manos-yoke.jpg" alt="Cabina de avioneta en vuelo" loading="lazy"><div><small>02 · Sin experiencia</small><h3>Vuelo de introducción</h3><span class="ln" style="margin:0">Reservar</span></div></a>
+    <a href="#plan" class="cp rv" data-curso="instr"><img src="fotos/avion-pista.jpg" alt="Avioneta en la pista" loading="lazy" style="object-position:50% 84%"><div><small>03</small><h3>Habilitaciones</h3><span class="ln" style="margin:0">Armá tu plan</span></div></a>
+  </div>
+</div></section>
+
+<section class="sec" id="plan"><div class="in">
+  <div class="lbl rv">Calculadora</div>
+  <p class="statement rv" style="margin-bottom:56px">Armá tu plan <span>en 30 segundos.</span></p>
+  <div class="calc rv">
+    <div class="ctrl">
+      <label>Curso<select id="cCurso"></select></label>
+      <label>Horas de vuelo por semana <b id="cHsV">3</b><input id="cHs" type="range" min="1" max="8" value="3"></label>
+    </div>
+    <div class="out">
+      <div><small>Tiempo estimado hasta tu licencia</small><b id="oTot">—</b></div>
+      <div class="oi"><div><small>Horas de vuelo</small><strong id="oCuota">—</strong></div><div><small>Por semana</small><strong id="oSem">—</strong></div><div><small>Licencia aprox.</small><strong id="oFin">—</strong></div></div>
+      <div><button class="btn" id="cGo">Pedir mi presupuesto</button><p class="fine" style="margin-top:12px">Estimación orientativa. Te enviamos el presupuesto a medida por WhatsApp.</p></div>
+    </div>
+  </div>
+</div></section>
+
+<section class="sec" id="equipo" style="padding-top:0"><div class="in">
+  <div class="lbl rv">Confianza</div>
+  <p class="statement rv" style="margin-bottom:56px">Quiénes te enseñan. <span>Qué avión volás.</span></p>
+  <div class="tg rv">
+    <div><div class="ini">01</div><b>Nombre Apellido</b><small>Instructor de vuelo · Mat. XXXX · X.XXX hs</small></div>
+    <div><div class="ini">02</div><b>Nombre Apellido</b><small>Instructor de vuelo · Mat. XXXX · X.XXX hs</small></div>
+    <div><div class="ini">03</div><b>Flota</b><small>LV-XXX · LV-YYY · LV-ZZZ · mantenimiento al día</small></div>
+  </div>
+  <div class="rv2 rv" style="margin-top:36px"><div class="st">★★★★★</div><p><b>4,9 en Google</b> · XX reseñas — “Pasé de no haber subido nunca a un avión a volar solo. Trato impecable.” Nombre, alumno</p><a class="ln" style="margin:0;border-color:var(--k)" href="https://www.instagram.com/hangarsud/" target="_blank" rel="noopener">Ver Instagram</a></div>
+  <div class="tr rv"><span>✓ Escuela habilitada por ANAC</span><span>✓ Instrucción 1 a 1</span><span>✓ Reprogramás sin costo si el clima no acompaña</span></div>
+</div></section>
+
+<section class="sec gift" id="regalo"><div class="in">
+  <div class="lbl rv">Regalá un vuelo</div>
+  <p class="statement rv">El regalo que nadie olvida. <span>Voucher listo para entregar por WhatsApp y mail.</span></p>
+  <div class="vg rv" id="vouchers"></div>
+</div></section>
+
+<section class="sec" id="contacto"><div class="in ct">
+  <div class="rv"><div class="lbl">Contacto</div><h2>Reservá<br>tu vuelo</h2><p class="m">Elegí una fecha y dejá tus datos. Te confirmamos por WhatsApp.</p>
+    <div class="chosen" id="plSel"></div><div class="dates" id="dates"></div></div>
+  <form id="lead" class="rv">
+    <input name="nombre" placeholder="Nombre" required autocomplete="name">
+    <input name="tel" type="tel" placeholder="WhatsApp" required autocomplete="tel">
+    <input name="email" type="email" placeholder="Email (opcional)" autocomplete="email">
+    <select name="interes" id="fInt"><option>Vuelo de introducción</option><option>Piloto Privado</option><option>Habilitaciones</option><option>Voucher regalo</option></select>
+    <select name="inicio"><option value="">¿Cuándo querés empezar?</option><option>Lo antes posible</option><option>Este mes</option><option>En 1 a 3 meses</option><option>Solo averiguando</option></select>
+    <label class="chk"><input type="checkbox" name="ok" required> Acepto que Hangarsud me contacte por WhatsApp y mail. <a href="#priv" style="text-decoration:underline">Privacidad</a></label>
+    <button class="btn" type="submit">Reservar</button>
+    <div id="ok">Listo. Te escribimos en breve.</div>
+    <p class="fine">La seña online con Mercado Pago se activa al conectar la cuenta de la escuela.</p>
+  </form>
+</div></section>
+
+<footer><div class="in">
+  <details id="priv"><summary>Privacidad</summary><p>Usamos tus datos solo para responder tu consulta y coordinar tu vuelo. No se venden ni se ceden. Podés pedir acceso, corrección o eliminación escribiendo a la escuela (Ley 25.326 de Protección de Datos Personales). <i>Texto base: validar con asesor legal.</i></p></details>
+  <div>© <span id="y"></span> Hangarsud · Córdoba, Argentina · <a href="https://www.instagram.com/hangarsud/" target="_blank" rel="noopener" style="text-decoration:underline">@hangarsud</a> · Fotos y video de ejemplo: Unsplash y Pexels</div>
+</div></footer>
+<a class="fab" id="wa" href="#" aria-label="WhatsApp">💬 WhatsApp</a>
+
+<script src="app.js"></script>
+<script>
+const $=id=>document.getElementById(id);
+$('y').textContent=new Date().getFullYear();
+$('wa').href=`https://wa.me/${CFG.wa}?text=${encodeURIComponent('Hola Hangarsud! Quiero info sobre cursos de piloto.')}`;
+
+// barra: transparente sobre el video, sólida al bajar
+const bar=$('bar');const onS=()=>bar.classList.toggle('solid',scrollY>window.innerHeight*.8);onS();addEventListener('scroll',onS,{passive:true});
+// video: pausa manual y respeto de "reducir movimiento"
+const hv=$('hv'),pp=$('pp');
+if(matchMedia('(prefers-reduced-motion:reduce)').matches){hv.removeAttribute('autoplay');hv.pause();pp.textContent='▶';pp.setAttribute('aria-label','Reproducir video')}
+pp.onclick=()=>{if(hv.paused){hv.play();pp.textContent='❚❚'}else{hv.pause();pp.textContent='▶'}};
+hv.play&&hv.play().catch(()=>{pp.textContent='▶'});
+
+// agenda
+const SL=getSlots();let pick=-1;
+const open=SL.map((s,i)=>({s,i})).filter(o=>o.s.cupos>o.s.anotados);
+if(open[0]){const l=open[0].s.cupos-open[0].s.anotados;$('nx').textContent=new Date(open[0].s.fecha).toLocaleDateString('es-AR',{weekday:'long',day:'numeric'});$('nxc').textContent=l+' cupos disponibles'}
+$('dates').innerHTML=open.slice(0,3).map(o=>{const l=o.s.cupos-o.s.anotados;return `<button type="button" class="dchip ${l<=2?'few':''}" data-i="${o.i}">${new Date(o.s.fecha).toLocaleDateString('es-AR',{weekday:'short',day:'numeric',month:'short'})} · ${l} cupos</button>`}).join('');
+$('dates').onclick=e=>{const b=e.target.closest('.dchip');if(!b)return;pick=+b.dataset.i;document.querySelectorAll('.dchip').forEach(x=>x.classList.toggle('sel',x===b))};
+
+// calculadora (sin precios: tiempo y horas; el presupuesto va por WhatsApp)
+$('cCurso').innerHTML=Object.entries(CFG.cursos).map(([k,c])=>`<option value="${k}">${c.n} (${c.horas} hs)</option>`).join('');
+let plan=null;
+function calc(){const p=plan=calcPlan($('cCurso').value,+$('cHs').value,1);$('cHsV').textContent=$('cHs').value+' hs';
+ $('oTot').textContent=p.semanas+' semanas';$('oCuota').textContent=p.horas+' hs';
+ $('oSem').textContent=$('cHs').value+' hs';$('oFin').textContent=p.fin.toLocaleDateString('es-AR',{month:'long',year:'numeric'})}
+$('cCurso').onchange=calc;$('cHs').oninput=calc;calc();
+$('cGo').onclick=()=>{const p=plan;$('fInt').value=p.curso.includes('Privado')?'Piloto Privado':'Habilitaciones';delete $('plSel').dataset.v;
+ $('plSel').textContent=`Tu plan: ${p.curso} · ${p.horas} hs de vuelo · ~${p.semanas} semanas`;$('plSel').style.display='block';
+ $('contacto').scrollIntoView({behavior:'smooth'})};
+document.querySelectorAll('[data-curso]').forEach(a=>a.addEventListener('click',()=>{$('cCurso').value=a.dataset.curso;calc()}));
+document.querySelectorAll('[data-int]').forEach(a=>a.addEventListener('click',()=>{$('fInt').value=a.dataset.int}));
+
+// vouchers
+$('vouchers').innerHTML=CFG.vouchers.map(v=>`<div class="vc"><b>${v.n}</b><p>${v.d}</p><div class="vp">${v.m==null?'Precio por consulta':money(v.m)}</div><button class="btn" data-v="${v.id}">Regalar</button></div>`).join('');
+$('vouchers').onclick=e=>{const b=e.target.closest('[data-v]');if(!b)return;const v=CFG.vouchers.find(x=>x.id===b.dataset.v);
+ $('fInt').value='Voucher regalo';$('plSel').textContent=`Voucher regalo: ${v.n}`;$('plSel').style.display='block';$('plSel').dataset.v=v.n+'|'+(v.m??'');$('contacto').scrollIntoView({behavior:'smooth'})};
+
+// envío
+$('lead').addEventListener('submit',e=>{
+ e.preventDefault();const d=Object.fromEntries(new FormData(e.target));
+ const v=$('plSel').dataset.v&&d.interes==='Voucher regalo'?$('plSel').dataset.v.split('|'):null;
+ const slot=pick>=0?SL[pick]:null;
+ const lead={nombre:d.nombre,tel:d.tel,email:d.email||'',interes:v?`Voucher regalo — ${v[0]}`:d.interes,inicio:d.inicio||'Solo averiguando',
+  plan:plan&&d.interes!=='Vuelo de introducción'&&!v&&d.interes!=='Voucher regalo'?`${plan.curso} · ${plan.horas} hs · ~${plan.semanas} semanas`:'',slot:slot?slot.fecha:'',
+  tipo:v?'voucher':slot?'reserva':'consulta',monto:v&&v[1]?+v[1]:slot?CFG.intro:null,origen:origenActual(),estado:slot?'agendado':'nuevo',fecha:new Date().toISOString()};
+ addLead(lead);if(slot)bookSlot(pick);
+ // En producción: acá se dispara el webhook (n8n/Make) → WhatsApp + email automáticos + aviso al dueño
+ $('ok').style.display='block';e.target.reset();
+ setTimeout(()=>window.open(`https://wa.me/${CFG.wa}?text=${encodeURIComponent('Hola! Soy '+d.nombre+'. Me interesa: '+lead.interes+(lead.plan?' ('+lead.plan+')':'')+(slot?'. Reservé el '+fmt(slot.fecha):''))}`,'_blank'),900);
+});
+const io=new IntersectionObserver(es=>es.forEach(x=>{if(x.isIntersecting){x.target.classList.add('in2');io.unobserve(x.target)}}),{threshold:.1});
+document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
