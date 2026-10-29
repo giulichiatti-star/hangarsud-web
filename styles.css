@@ -186,3 +186,15 @@ td select{padding:6px 8px;border:1px solid var(--line);border-radius:10px;backgr
 .sub2{color:var(--mut);font-size:13px;margin:-8px 0 14px}
 @media(max-width:900px){.out,.ctrl{padding:24px}}
 .demo{background:var(--ink);color:#c4d2f5;text-align:center;font-size:12px;padding:8px 14px;letter-spacing:.02em}
+
+/* ajustes móvil del panel */
+.panel{overflow-x:auto}
+@media(max-width:900px){
+ aside{padding:8px 10px;gap:4px}
+ aside a{padding:9px 12px;font-size:13px;margin:0;border-radius:99px;flex:none}
+ aside a.on{font-weight:600}
+ main{padding:18px 16px}
+ main h1{font-size:30px}
+ .kpi b{font-size:38px!important}
+ table{min-width:520px}
+}
