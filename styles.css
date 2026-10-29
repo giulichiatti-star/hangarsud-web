@@ -198,3 +198,4 @@ td select{padding:6px 8px;border:1px solid var(--line);border-radius:10px;backgr
  .kpi b{font-size:38px!important}
  table{min-width:520px}
 }
+@media(max-width:900px){aside{align-items:center}aside .logo{margin:0 8px 0 0;flex:none}aside .logo img{width:30px;height:30px}aside .logo span{display:none}aside a.on{height:auto}}
