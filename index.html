@@ -111,6 +111,7 @@ const $=id=>document.getElementById(id);
 $('y').textContent=new Date().getFullYear();
 $('wa').href=`https://wa.me/${CFG.wa}?text=${encodeURIComponent('Hola Hangarsud! Quiero info sobre cursos de piloto.')}`;
 
+const setDh=()=>document.documentElement.style.setProperty('--dh',document.querySelector('.demo').offsetHeight+'px');setDh();addEventListener('resize',setDh);
 // barra: transparente sobre el video, sólida al bajar
 const bar=$('bar');const onS=()=>bar.classList.toggle('solid',scrollY>window.innerHeight*.8);onS();addEventListener('scroll',onS,{passive:true});
 // video: pausa manual y respeto de "reducir movimiento"
